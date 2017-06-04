@@ -13,7 +13,8 @@ public class PlayerController : MonoBehaviour {
 	public float dashLength;
 	public float dashFactor;
 
-	public GameObject dashOne;
+	public GameObject dashDisplay;
+	public GameObject scoreNumber;
 
 	float xMovement;
 	float yMovement;
@@ -21,6 +22,9 @@ public class PlayerController : MonoBehaviour {
 
 	float currentBar;
 	float currentDash;
+	int score = 0;
+
+	Vector3 pos;
 
 	public enum Player {
 		One, 
@@ -112,6 +116,16 @@ public class PlayerController : MonoBehaviour {
 
 		transform.Translate(newMove);
 
-		dashOne.GetComponent<Slider>().value = currentBar;
+		dashDisplay.GetComponent<Slider>().value = currentBar;
+		scoreNumber.GetComponent<Text>().text = score.ToString();
+
+		pos = Camera.main.WorldToViewportPoint(transform.position);
+		pos.x = Mathf.Clamp01(pos.x);
+		pos.y = Mathf.Clamp01(pos.y);
+		transform.position = Camera.main.ViewportToWorldPoint(pos);
+	}
+
+	public void IncreaseScore(int valueAdded){
+		this.score += valueAdded;
 	}
 }
